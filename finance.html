@@ -63,6 +63,7 @@
                 graph TD
                     %% Define Colors
                     classDef finance fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px;
+                    classDef treasury fill:#fff9c4,stroke:#fbc02d,stroke-width:2px;
 
                     %% --- ACCOUNTS PAYABLE ---
                     subgraph AP_Flow ["OUTFLOW: Accounts Payable"]
@@ -71,7 +72,20 @@
                         MATCH_3 -- "Match OK" --> POST_AP["Post Liability"]
                         POST_AP --> DUE_CHK{"Due Date?"}
                         
-                        DUE_CHK -- "Yes" --> PAY_RUN["Exec Payment Run"]
+                        DUE_CHK -- "Yes" --> CASH_CHK{"Cash Available?"}
+                        
+                        %% --- TREASURY LOOP ---
+                        subgraph Treasury ["Treasury / Funding"]
+                            CASH_CHK -- "No" --> FIN_OPT{"Source?"}
+                            FIN_OPT -- "Channel Fin" --> REQ_CF["Request Drawdown"]
+                            FIN_OPT -- "Credit Line" --> REQ_OD["Use Overdraft"]
+                            REQ_CF --> FUND_RX["Funds Received"]
+                            REQ_OD --> FUND_RX
+                        end
+
+                        FUND_RX --> PAY_RUN["Exec Payment Run"]
+                        CASH_CHK -- "Yes" --> PAY_RUN
+                        
                         PAY_RUN --> BANK_FILE["Send Bank File"]
                         BANK_FILE --> REMIT["Send Remittance"]
                         
@@ -79,7 +93,8 @@
                     end
 
                     %% Styles
-                    class VEND_INV,MATCH_3,POST_AP,DUE_CHK,PAY_RUN,BANK_FILE,REMIT,DISPUTE finance;
+                    class VEND_INV,MATCH_3,POST_AP,DUE_CHK,CASH_CHK,PAY_RUN,BANK_FILE,REMIT,DISPUTE finance;
+                    class FIN_OPT,REQ_CF,REQ_OD,FUND_RX treasury;
                 </div>
             </div>
         </div>
