@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Finance & Accounting - Electronics Distribution</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="navbar.js"></script>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ startOnLoad: true });
+    </script>
+</head>
+<body>
+    <div id="navbar-placeholder"></div>
+
+    <div class="container">
+        <a href="index.html" class="back-link">← Back to Master Map</a>
+        
+        <div class="diagram-card">
+            <h2>Level 1: Finance (AR & AP)</h2>
+            <p>Managing Cash Flow. <b>AR:</b> Collections & Credit. <b>AP:</b> 3-Way Matching & Payments.</p>
+            
+            <div class="mermaid">
+            graph TD
+                %% Define Colors
+                classDef commercial fill:#fff3e0,stroke:#e65100,stroke-width:2px;
+                classDef warehouse fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
+                classDef finance fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px;
+                classDef system fill:#f3e5f5,stroke:#4a148c,stroke-width:2px;
+
+                %% --- ACCOUNTS RECEIVABLE (INFLOW) ---
+                subgraph AR_Flow ["INFLOW: Accounts Receivable (AR)"]
+                    SHIP_TRIG(("Shipment Confirmed")) --> GEN_INV["Generate Customer Invoice"]
+                    GEN_INV --> SEND_INV["Email Invoice to Customer"]
+                    SEND_INV --> AGE_CHK{"Payment Due?"}
+                    
+                    AGE_CHK -- "No" --> WAIT["Wait Terms (e.g. Net 30)"]
+                    AGE_CHK -- "Yes" --> PAID_CHK{"Payment Received?"}
+                    
+                    PAID_CHK -- "Yes" --> POST_CASH["Post Cash Receipt"]
+                    POST_CASH --> CLEAR_AR["Clear Open Item"]
+                    
+                    PAID_CHK -- "No" --> COLLECTIONS["Start Collections Process"]
+                    COLLECTIONS --> HOLD_TRIG[["Place Credit Hold"]]
+                end
+
+                %% --- ACCOUNTS PAYABLE (OUTFLOW) ---
+                subgraph AP_Flow ["OUTFLOW: Accounts Payable (AP)"]
+                    VEND_INV(("Vendor Invoice Rec'd")) --> MATCH_3{"3-Way Match?"}
+                    
+                    MATCH_3 -- "Match: PO+GRN+Inv" --> POST_AP["Post Liability to GL"]
+                    POST_AP --> DUE_CHK{"Due Date Reached?"}
+                    
+                    DUE_CHK -- "Yes" --> PAY_RUN["Execute Payment Run"]
+                    PAY_RUN --> BANK_FILE["Send File to Bank"]
+                    BANK_FILE --> REMIT["Send Remittance Advice"]
+                    
+                    MATCH_3 -- "Mismatch" --> DISPUTE["Hold & Dispute"]
+                end
+
+                %% CONNECTIONS TO OTHER MODULES
+                HOLD_TRIG -.->|Stop Sales| SALES_LINK[["Sales Module"]]
+                
+                %% Styles
+                class SHIP_TRIG,GEN_INV,SEND_INV,AGE_CHK,WAIT,PAID_CHK,POST_CASH,CLEAR_AR,COLLECTIONS,HOLD_TRIG finance;
+                class VEND_INV,MATCH_3,POST_AP,DUE_CHK,PAY_RUN,BANK_FILE,REMIT,DISPUTE finance;
+                class SALES_LINK commercial;
+            </div>
+        </div>
+    </div>
+</body>
+</html>
