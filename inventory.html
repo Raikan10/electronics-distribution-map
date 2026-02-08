@@ -37,38 +37,38 @@
                 classDef system fill:#f3e5f5,stroke:#4a148c,stroke-width:2px;
 
                 %% SWIMLANE: WAREHOUSE OPS (The Movers)
-                subgraph WH_Ops ["WAREHOUSE: Ops Team"]
-                    PUT_START((From Inbound)) --> SCAN_BIN[Scan Bin Location]
-                    SCAN_BIN --> PHY_MOVE[Physical Putaway]
-                    
+                subgraph WH_Ops ["WAREHOUSE - Ops Team"]
+                    PUT_START(("From Inbound")) --> SCAN_BIN["Scan Bin Location"]
+                    SCAN_BIN --> PHY_MOVE["Physical Putaway"]
+
                     %% Cycle Count Process
-                    COUNT_START((Daily Cycle Count)) --> BLIND_COUNT[Blind Count Bin]
-                    BLIND_COUNT --> INPUT_QTY[Input Qty to Scanner]
+                    COUNT_START(("Daily Cycle Count")) --> BLIND_COUNT["Blind Count Bin"]
+                    BLIND_COUNT --> INPUT_QTY["Input Qty to Scanner"]
                 end
 
                 %% SWIMLANE: INVENTORY CONTROL (The Checkers)
-                subgraph IC_Team ["WAREHOUSE: Inventory Control"]
-                    VAR_CHK{Variance?}
-                    VAR_CHK -- "Match" --> CLOSE[Close Count Task]
-                    VAR_CHK -- "Mismatch" --> INVEST[Investigate / Recount]
-                    INVEST --> RE_CHK{Found Error?}
-                    RE_CHK -- "Yes (Fixed)" --> CLOSE
-                    RE_CHK -- "No (Lost)" --> ADJ_REQ[Request Write-off]
+                subgraph IC_Team ["WAREHOUSE - Inventory Control"]
+                    VAR_CHK{"Variance?"}
+                    VAR_CHK -- "Match" --> CLOSE["Close Count Task"]
+                    VAR_CHK -- "Mismatch" --> INVEST["Investigate / Recount"]
+                    INVEST --> RE_CHK{"Found Error?"}
+                    RE_CHK -- "Yes Fixed" --> CLOSE
+                    RE_CHK -- "No Lost" --> ADJ_REQ["Request Write-off"]
                 end
 
                 %% SWIMLANE: FINANCE (The Approvers)
-                subgraph Fin_Audit ["FINANCE: Audit Team"]
-                    ADJ_REQ --> APPR_CHK{Value > Threshold?}
-                    APPR_CHK -- "Low Value" --> AUTO_WO[Auto Write-off]
-                    APPR_CHK -- "High Value" --> MAN_REV[Manager Review]
-                    MAN_REV --> WO_FINAL[Final Write-off Post]
+                subgraph Fin_Audit ["FINANCE - Audit Team"]
+                    ADJ_REQ --> APPR_CHK{"Value > Threshold?"}
+                    APPR_CHK -- "Low Value" --> AUTO_WO["Auto Write-off"]
+                    APPR_CHK -- "High Value" --> MAN_REV["Manager Review"]
+                    MAN_REV --> WO_FINAL["Final Write-off Post"]
                 end
 
                 %% SWIMLANE: SYSTEM
-                subgraph MIS_Sys ["MIS / ERP System"]
-                    BIN_UPD[Update Location Data]
-                    AGING_REP[Generate Aging Report]
-                    STOCK_ADJ[Update Stock Level]
+                subgraph MIS_Sys ["MIS ERP System"]
+                    BIN_UPD["Update Location Data"]
+                    AGING_REP["Generate Aging Report"]
+                    STOCK_ADJ["Update Stock Level"]
                 end
 
                 %% CONNECTIONS
