@@ -4,22 +4,14 @@
     <meta charset="UTF-8">
     <title>Sales & Order Processing - Electronics Distribution</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="navbar.js"></script>
     <script type="module">
         import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
         mermaid.initialize({ startOnLoad: true });
     </script>
 </head>
 <body>
-    <header>
-        <h1>Electronics Distribution Process</h1>
-        <nav>
-            <a href="index.html">Home</a>
-            <a href="procurement.html">Procurement</a>
-            <a href="inventory.html">Inventory</a>
-            <a href="sales.html">Sales</a>
-            <a href="#">Finance</a>
-        </nav>
-    </header>
+    <div id="navbar-placeholder"></div>
 
     <div class="container">
         <a href="index.html" class="back-link">← Back to Master Map</a>
@@ -57,7 +49,7 @@
                 %% SWIMLANE: SYSTEM (Allocation)
                 subgraph Sys_Logic ["MIS / ERP System"]
                     PASS_CREDIT --> STOCK_CHK{"Stock Available?"}
-                    STOCK_CHK -- "No" --> BACKORDER["Create Backorder"]
+                    STOCK_CHK -- "No" --> BACKORDER["Create Backorder Request"]
                     STOCK_CHK -- "Yes" --> ALLOC["Soft Allocate Stock"]
                     ALLOC --> CONFIRM["Send Order Confirmation"]
                     BACKORDER --> CONFIRM
@@ -66,12 +58,16 @@
                 %% CONNECTIONS
                 LOST --> END_NODE(("End"))
                 CONFIRM --> PICK_REQ[["To Fulfillment"]]
+                BACKORDER -.->|"Trigger Purchase"| PROC_LINK[["To Procurement"]]
 
                 %% Styles
                 class START,QUOTE,ACCEPT,LOST,ORDER,REJECT commercial;
                 class CRED_CHK,HOLD,REL_REQ,PASS_CREDIT finance;
                 class STOCK_CHK,BACKORDER,ALLOC,CONFIRM system;
-                class END_NODE,PICK_REQ system;
+                class END_NODE,PICK_REQ,PROC_LINK system;
+
+                %% Click Link
+                click PROC_LINK "procurement.html" "Jump to Procurement"
             </div>
         </div>
     </div>

@@ -4,22 +4,14 @@
     <meta charset="UTF-8">
     <title>Electronics Distribution Master Map</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="navbar.js"></script>
     <script type="module">
         import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
         mermaid.initialize({ startOnLoad: true, securityLevel: 'loose' });
     </script>
 </head>
 <body>
-    <header>
-        <h1>Electronics Distribution Process</h1>
-        <nav>
-            <a href="index.html">Home</a>
-            <a href="procurement.html">Procurement</a>
-            <a href="#">Inventory</a>
-            <a href="#">Sales</a>
-            <a href="#">Finance</a>
-        </nav>
-    </header>
+    <div id="navbar-placeholder"></div>
 
     <div class="container">
         <div class="diagram-card">
@@ -69,6 +61,7 @@
                 %% Key Links across departments
                 FUL -->|POD / Delivery| FIN_AR
                 INB -->|GRN Generated| FIN_AP
+                SALES -.->|"Backorder Demand"| PROC
                 
                 %% Applying styles
                 class PROC,INB,INV,FUL,REV,CUST warehouse;
@@ -81,6 +74,7 @@
                 click INB "procurement.html" "Go to Inbound Detail"
                 click INV "inventory.html" "Go to Inventory Detail"
                 click SALES "sales.html" "Go to Sales Detail"
+                click FUL "fulfillment.html" "Go to Fulfillment Detail"
             </div>
         </div>
     </div>

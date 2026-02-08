@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Fulfillment & Logistics - Electronics Distribution</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="navbar.js"></script>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ startOnLoad: true });
+    </script>
+</head>
+<body>
+    <div id="navbar-placeholder"></div>
+
+    <div class="container">
+        <a href="index.html" class="back-link">← Back to Master Map</a>
+        
+        <div class="diagram-card">
+            <h2>Level 1: Fulfillment & Logistics (The Move Side)</h2>
+            <p>From Pick List to Proof of Delivery (POD). <b>Key Control:</b> Scan-to-Pack Verification.</p>
+            
+            <div class="mermaid">
+            graph TD
+                %% Define Colors
+                classDef commercial fill:#fff3e0,stroke:#e65100,stroke-width:2px;
+                classDef warehouse fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
+                classDef finance fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px;
+                classDef system fill:#f3e5f5,stroke:#4a148c,stroke-width:2px;
+
+                %% SWIMLANE: SYSTEM (Start)
+                subgraph MIS_Start ["MIS / ERP System"]
+                    START(("Order Ready")) --> GEN_PICK["Generate Pick List"]
+                    GEN_PICK --> SORT_PICK["Sort by Bin Location"]
+                end
+
+                %% SWIMLANE: WAREHOUSE (Picking)
+                subgraph WH_Pick ["WAREHOUSE: Picking Team"]
+                    SORT_PICK --> PHY_PICK["Go to Bin Location"]
+                    PHY_PICK --> SCAN_ITEM["Scan Item Serial"]
+                    SCAN_ITEM --> CONFIRM_PICK["Confirm Qty"]
+                    CONFIRM_PICK --> TO_PACK["Move to Pack Bench"]
+                end
+
+                %% SWIMLANE: WAREHOUSE (Packing)
+                subgraph WH_Pack ["WAREHOUSE: Packing Team"]
+                    TO_PACK --> QC_SCAN{"QC Scan Verify"}
+                    QC_SCAN -- "Wrong Item" --> ERROR["Stop & Replace"]
+                    QC_SCAN -- "Match OK" --> PACK["Pack in Anti-Static"]
+                    PACK --> WEIGH["Weigh & Measure"]
+                end
+
+                %% SWIMLANE: LOGISTICS & SYSTEM
+                subgraph Logistics ["LOGISTICS & SYSTEM"]
+                    WEIGH --> GEN_LABEL["Generate Carrier Label"]
+                    GEN_LABEL --> SHIP_CONF["Shipment Confirmed"]
+                    SHIP_CONF --> DEC_INV["Decrement Inventory"]
+                    SHIP_CONF --> TRIG_INV["Trigger Invoice"]
+                end
+
+                %% CONNECTIONS
+                TRIG_INV --> FIN_LINK[["To Finance AR"]]
+                SHIP_CONF --> HANDOFF["Carrier Handoff"]
+                HANDOFF --> POD(("POD Received"))
+
+                %% Styles
+                class START,GEN_PICK,SORT_PICK,GEN_LABEL,SHIP_CONF,DEC_INV,TRIG_INV system;
+                class PHY_PICK,SCAN_ITEM,CONFIRM_PICK,TO_PACK warehouse;
+                class QC_SCAN,ERROR,PACK,WEIGH,HANDOFF,POD warehouse;
+                class FIN_LINK finance;
+            </div>
+        </div>
+    </div>
+</body>
+</html>

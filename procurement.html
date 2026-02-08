@@ -4,23 +4,14 @@
     <meta charset="UTF-8">
     <title>Procurement & Inbound - Electronics Distribution</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="navbar.js"></script>
     <script type="module">
         import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
         mermaid.initialize({ startOnLoad: true });
     </script>
 </head>
 <body>
-    <header>
-        <h1>Electronics Distribution Process</h1>
-        <nav>
-            <a href="index.html">Home</a>
-            <a href="procurement.html">Procurement</a>
-            <!-- Placeholders for future pages -->
-            <a href="#">Inventory</a>
-            <a href="#">Sales</a>
-            <a href="#">Finance</a>
-        </nav>
-    </header>
+    <div id="navbar-placeholder"></div>
 
     <div class="container">
         <a href="index.html" class="back-link">← Back to Master Map</a>
@@ -39,7 +30,8 @@
 
                 %% SWIMLANE: COMMERCIAL (Procurement)
                 subgraph Commercial_Team ["COMMERCIAL: Procurement Team"]
-                    StartNode((Start)) --> ID_NEED[Identify Stock Need]
+                    StartNode(("Standard Forecast")) --> ID_NEED[Identify Stock Need]
+                    BackorderNode(("Sales Backorder")) --> ID_NEED
                     ID_NEED --> VENDOR[Select Vendor & Price]
                     VENDOR --> PO_GEN[Generate PO]
                     PO_GEN --> PO_SEND[Send PO to Vendor]
