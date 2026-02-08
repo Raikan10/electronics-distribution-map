@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Transformation Opportunities - Electronics Distribution</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="navbar.js"></script>
+    <style>
+        .ai-card {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            border-left: 5px solid #3498db;
+        }
+        .ai-card h3 {
+            margin-top: 0;
+            color: #2c3e50;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .tag {
+            background-color: #3498db;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+        }
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            margin-top: 15px;
+        }
+        .col {
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 6px;
+        }
+        .col h4 {
+            margin-top: 0;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            color: #7f8c8d;
+            border-bottom: 2px solid #bdc3c7;
+            padding-bottom: 5px;
+        }
+        .shadow-work { color: #c0392b; }
+        .ai-sol { color: #27ae60; font-weight: bold; }
+        .human-role { color: #8e44ad; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div id="navbar-placeholder"></div>
+
+    <div class="container">
+        <h1>AI Transformation Roadmap</h1>
+        <p>Moving from "Process Mapping" to "Process Automation." Identifying high-value opportunities to deploy AI Agents against shadow work.</p>
+
+        <!-- PROCUREMENT -->
+        <div class="ai-card" style="border-left-color: #e67e22;">
+            <h3>1. Procurement & Sourcing <span class="tag" style="background-color: #e67e22;">Predictive Supply</span></h3>
+            <div class="comparison-grid">
+                <div class="col">
+                    <h4>Current Shadow Work</h4>
+                    <ul class="shadow-work">
+                        <li>Manually reviewing Excel history to guess forecast.</li>
+                        <li>Typing POs into ERP.</li>
+                        <li>Chasing vendors for tracking numbers via email.</li>
+                    </ul>
+                </div>
+                <div class="col">
+                    <h4>The AI Agent</h4>
+                    <p class="ai-sol">Predictive Buying Agent</p>
+                    <p>Analyzes seasonality, sales velocity, and lead times to <b>draft POs automatically</b>. Scrapes vendor portals to update ETAs in real-time.</p>
+                </div>
+                <div class="col">
+                    <h4>The Human Role</h4>
+                    <p class="human-role">Strategic Sourcing</p>
+                    <p>Negotiating better terms, finding new suppliers, and handling "Stock Out" emergencies.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- INVENTORY -->
+        <div class="ai-card" style="border-left-color: #2980b9;">
+            <h3>2. Inventory Management <span class="tag" style="background-color: #2980b9;">Visual Intelligence</span></h3>
+            <div class="comparison-grid">
+                <div class="col">
+                    <h4>Current Shadow Work</h4>
+                    <ul class="shadow-work">
+                        <li>Walking aisles to count boxes (Cycle Counting).</li>
+                        <li>Investigating "Why is this missing?" (Data digging).</li>
+                        <li>Keying in location updates.</li>
+                    </ul>
+                </div>
+                <div class="col">
+                    <h4>The AI Agent</h4>
+                    <p class="ai-sol">Visual Audit Drone / Cam</p>
+                    <p>Fixed cameras or drones scan barcodes overnight. AI compares visual stock vs. ERP data and <b>flags variances automatically</b>.</p>
+                </div>
+                <div class="col">
+                    <h4>The Human Role</h4>
+                    <p class="human-role">Exception Handler</p>
+                    <p>Only investigating the variances the AI flags. Optimizing warehouse layout.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SALES -->
+        <div class="ai-card" style="border-left-color: #e67e22;">
+            <h3>3. Sales & Order Entry <span class="tag" style="background-color: #e67e22;">Zero-Touch Entry</span></h3>
+            <div class="comparison-grid">
+                <div class="col">
+                    <h4>Current Shadow Work</h4>
+                    <ul class="shadow-work">
+                        <li>Opening PDF Purchase Orders from email.</li>
+                        <li>Manually typing SKU codes into Sales Orders.</li>
+                        <li>Checking credit limits manually.</li>
+                    </ul>
+                </div>
+                <div class="col">
+                    <h4>The AI Agent</h4>
+                    <p class="ai-sol">Inbox-to-ERP Agent</p>
+                    <p>LLM reads the PDF/Email body, extracts SKUs/Qty, checks stock, and <b>creates the Sales Order draft</b> instantly.</p>
+                </div>
+                <div class="col">
+                    <h4>The Human Role</h4>
+                    <p class="human-role">Relationship Manager</p>
+                    <p>Upselling, consulting on technical specs, and managing client relationships.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- FINANCE -->
+        <div class="ai-card" style="border-left-color: #27ae60;">
+            <h3>4. Finance (AP & AR) <span class="tag" style="background-color: #27ae60;">Autonomous Audit</span></h3>
+            <div class="comparison-grid">
+                <div class="col">
+                    <h4>Current Shadow Work</h4>
+                    <ul class="shadow-work">
+                        <li>Staring at screens to match PO vs Invoice.</li>
+                        <li>Sending "Please pay me" emails.</li>
+                        <li>Reconciling bank statements row-by-row.</li>
+                    </ul>
+                </div>
+                <div class="col">
+                    <h4>The AI Agent</h4>
+                    <p class="ai-sol">3-Way Match & Collections Bot</p>
+                    <p><b>Auto-approves</b> matches within tolerance (e.g., <$0.05 diff). Writes personalized, polite-but-firm collections emails based on payment history.</p>
+                </div>
+                <div class="col">
+                    <h4>The Human Role</h4>
+                    <p class="human-role">CFO / Controller</p>
+                    <p>Managing cash flow strategy (Treasury), handling disputes, and securing credit lines.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
