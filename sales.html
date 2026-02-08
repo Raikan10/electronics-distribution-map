@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sales & Order Processing - Electronics Distribution</title>
+    <link rel="stylesheet" href="styles.css">
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ startOnLoad: true });
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Electronics Distribution Process</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="procurement.html">Procurement</a>
+            <a href="inventory.html">Inventory</a>
+            <a href="sales.html">Sales</a>
+            <a href="#">Finance</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <a href="index.html" class="back-link">← Back to Master Map</a>
+        
+        <div class="diagram-card">
+            <h2>Level 1: Sales & Order Processing (The Sell Side)</h2>
+            <p>From Quote to Confirmed Order. <b>Key Check:</b> Credit Limit & Inventory Allocation.</p>
+            
+            <div class="mermaid">
+            graph TD
+                %% Define Colors
+                classDef commercial fill:#fff3e0,stroke:#e65100,stroke-width:2px;
+                classDef warehouse fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
+                classDef finance fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px;
+                classDef system fill:#f3e5f5,stroke:#4a148c,stroke-width:2px;
+
+                %% SWIMLANE: SALES TEAM
+                subgraph Sales_Team ["COMMERCIAL: Sales Team"]
+                    START(("Customer Inquiry")) --> QUOTE["Generate Quote"]
+                    QUOTE --> ACCEPT{"Customer Accepts?"}
+                    ACCEPT -- "No" --> LOST["Mark as Lost"]
+                    ACCEPT -- "Yes" --> ORDER["Create Sales Order (SO)"]
+                end
+
+                %% SWIMLANE: FINANCE (Credit Control)
+                subgraph Fin_Credit ["FINANCE: Credit Control"]
+                    ORDER --> CRED_CHK{"Credit Check"}
+                    CRED_CHK -- "Over Limit" --> HOLD["Credit Hold"]
+                    HOLD --> REL_REQ{"Manager Release?"}
+                    REL_REQ -- "No" --> REJECT["Cancel Order"]
+                    REL_REQ -- "Yes" --> PASS_CREDIT["Credit Approved"]
+                    CRED_CHK -- "Within Limit" --> PASS_CREDIT
+                end
+
+                %% SWIMLANE: SYSTEM (Allocation)
+                subgraph Sys_Logic ["MIS / ERP System"]
+                    PASS_CREDIT --> STOCK_CHK{"Stock Available?"}
+                    STOCK_CHK -- "No" --> BACKORDER["Create Backorder"]
+                    STOCK_CHK -- "Yes" --> ALLOC["Soft Allocate Stock"]
+                    ALLOC --> CONFIRM["Send Order Confirmation"]
+                    BACKORDER --> CONFIRM
+                end
+
+                %% CONNECTIONS
+                LOST --> END_NODE(("End"))
+                CONFIRM --> PICK_REQ[["To Fulfillment"]]
+
+                %% Styles
+                class START,QUOTE,ACCEPT,LOST,ORDER,REJECT commercial;
+                class CRED_CHK,HOLD,REL_REQ,PASS_CREDIT finance;
+                class STOCK_CHK,BACKORDER,ALLOC,CONFIRM system;
+                class END_NODE,PICK_REQ system;
+            </div>
+        </div>
+    </div>
+</body>
+</html>
