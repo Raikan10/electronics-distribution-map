@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Electronics Distribution Process Map</title>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ startOnLoad: true });
+    </script>
+    <style>
+        body { font-family: sans-serif; padding: 20px; background-color: #f4f4f9; }
+        h2 { border-bottom: 2px solid #333; padding-bottom: 10px; margin-top: 40px; }
+        .diagram-container { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 30px; }
+        .mermaid { display: flex; justify-content: center; }
+    </style>
+</head>
+<body>
+    <h1>Electronics Distribution Process Flow</h1>
+
+    <!-- LEVEL 0 MASTER MAP -->
+    <div class="diagram-container">
+        <h2>Level 0: Master System Map</h2>
+        <div class="mermaid">
+        graph TD
+            %% Subgraph Styling
+            classDef warehouse fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
+            classDef commercial fill:#fff3e0,stroke:#e65100,stroke-width:2px;
+            classDef money fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px;
+            classDef mis fill:#f3e5f5,stroke:#4a148c,stroke-width:2px;
+
+            subgraph WAREHOUSE ["GOODS FLOW (The Warehouse)"]
+                direction TB
+                PROC[1. Procurement] -->|PO Issued| INB[2. Inbound & QC]
+                INB -->|Stock Putaway| INV[3. Inventory Management]
+                INV -->|Allocation| FUL[5. Fulfillment & Logistics]
+                FUL -->|Shipment| CUST((Customer))
+                CUST -->|RMA Request| REV[Reverse Logistics]
+                REV -->|Restock/Scrap| INV
+            end
+
+            subgraph OFFICE ["COMMERCIAL FLOW (The Office)"]
+                direction TB
+                SALES[4. Sales & Order Proc] -->|Sales Order| INV
+                SALES -->|Invoice Generated| FIN_AR[6. Collections & AR]
+                PROC -->|Vendor Invoice| FIN_AP[7. Accounting & AP]
+            end
+
+            subgraph FINANCE ["MONEY FLOW (The Bank)"]
+                direction TB
+                FIN_AR -->|Payment Received| BANK[Bank Reconciliation]
+                FIN_AP -->|Payment Sent| BANK
+                BANK -->|Financial Reports| GL[General Ledger]
+            end
+
+            subgraph SYSTEM ["INFORMATION FLOW (MIS)"]
+                MIS[8. MIS / ERP System]
+                MIS -.-> PROC
+                MIS -.-> SALES
+                MIS -.-> INV
+                MIS -.-> FIN_AR
+            end
+
+            %% Key Links across departments
+            FUL -->|POD / Delivery| FIN_AR
+            INB -->|GRN Generated| FIN_AP
+            
+            %% Applying styles
+            class PROC,INB,INV,FUL,REV,CUST warehouse;
+            class SALES,FIN_AR,FIN_AP office;
+            class BANK,GL finance;
+            class MIS system;
+        </div>
+    </div>
+
+    <!-- LEVEL 1: PROCUREMENT & INBOUND -->
+    <div class="diagram-container">
+        <h2>Level 1: Procurement & Inbound (The Buy Side)</h2>
+        <div class="mermaid">
+        graph TD
+            %% Define Colors
+            classDef commercial fill:#fff3e0,stroke:#e65100,stroke-width:2px;
+            classDef warehouse fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
+            classDef finance fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px;
+            classDef system fill:#f3e5f5,stroke:#4a148c,stroke-width:2px;
+
+            %% SWIMLANE: COMMERCIAL (Procurement)
+            subgraph Commercial_Team ["COMMERCIAL: Procurement Team"]
+                StartNode((Start)) --> ID_NEED[Identify Stock Need]
+                ID_NEED --> VENDOR[Select Vendor & Price]
+                VENDOR --> PO_GEN[Generate PO]
+                PO_GEN --> PO_SEND[Send PO to Vendor]
+            end
+
+            %% SWIMLANE: WAREHOUSE (Inbound)
+            subgraph Warehouse_Team ["WAREHOUSE: Inbound Team"]
+                TRUCK[Truck Arrives] --> UNLOAD[Unload & Count]
+                UNLOAD --> DMG_CHK{Damage Check?}
+                DMG_CHK -- Yes --> REJECT[Reject/Quarantine]
+                DMG_CHK -- No --> SCAN[Scan Serials]
+                SCAN --> GRN[Generate GRN]
+                GRN --> PUTAWAY[Putaway to Bin]
+            end
+
+            %% SWIMLANE: FINANCE (Accounts Payable)
+            subgraph Finance_Team ["FINANCE: Accounts Payable"]
+                INV_RX[Receive Invoice] --> MATCH{3-Way Match?}
+                MATCH -- Match OK --> POST[Post to GL]
+                POST --> PAY[Schedule Payment]
+                MATCH -- Mismatch --> DISPUTE[Raise Dispute]
+            end
+
+            %% CONNECTIONS
+            PO_SEND -->|Vendor Ships| TRUCK
+            GRN -->|Update Inventory| MIS[(MIS System)]
+            GRN -->|Proof of Receipt| MATCH
+            PO_GEN -->|Expected Cost| MATCH
+            
+            %% Styles
+            class StartNode,ID_NEED,VENDOR,PO_GEN,PO_SEND commercial;
+            class TRUCK,UNLOAD,DMG_CHK,REJECT,SCAN,GRN,PUTAWAY warehouse;
+            class INV_RX,MATCH,POST,PAY,DISPUTE finance;
+            class MIS system;
+        </div>
+    </div>
+
+</body>
+</html>

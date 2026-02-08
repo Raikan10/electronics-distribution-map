@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Electronics Distribution Master Map</title>
+    <link rel="stylesheet" href="styles.css">
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ startOnLoad: true, securityLevel: 'loose' });
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Electronics Distribution Process</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="procurement.html">Procurement</a>
+            <a href="#">Inventory</a>
+            <a href="#">Sales</a>
+            <a href="#">Finance</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="diagram-card">
+            <h2>Level 0: Master System Map</h2>
+            <p>Click on the <b>Procurement</b> or <b>Inbound</b> nodes to see detailed workflows.</p>
+            
+            <div class="mermaid">
+            graph TD
+                %% Subgraph Styling
+                classDef warehouse fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
+                classDef commercial fill:#fff3e0,stroke:#e65100,stroke-width:2px;
+                classDef money fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px;
+                classDef mis fill:#f3e5f5,stroke:#4a148c,stroke-width:2px;
+
+                subgraph WAREHOUSE ["GOODS FLOW (The Warehouse)"]
+                    direction TB
+                    PROC[1. Procurement] -->|PO Issued| INB[2. Inbound & QC]
+                    INB -->|Stock Putaway| INV[3. Inventory Management]
+                    INV -->|Allocation| FUL[5. Fulfillment & Logistics]
+                    FUL -->|Shipment| CUST((Customer))
+                    CUST -->|RMA Request| REV[Reverse Logistics]
+                    REV -->|Restock/Scrap| INV
+                end
+
+                subgraph OFFICE ["COMMERCIAL FLOW (The Office)"]
+                    direction TB
+                    SALES[4. Sales & Order Proc] -->|Sales Order| INV
+                    SALES -->|Invoice Generated| FIN_AR[6. Collections & AR]
+                    PROC -->|Vendor Invoice| FIN_AP[7. Accounting & AP]
+                end
+
+                subgraph FINANCE ["MONEY FLOW (The Bank)"]
+                    direction TB
+                    FIN_AR -->|Payment Received| BANK[Bank Reconciliation]
+                    FIN_AP -->|Payment Sent| BANK
+                    BANK -->|Financial Reports| GL[General Ledger]
+                end
+
+                subgraph SYSTEM ["INFORMATION FLOW (MIS)"]
+                    MIS[8. MIS / ERP System]
+                    MIS -.-> PROC
+                    MIS -.-> SALES
+                    MIS -.-> INV
+                    MIS -.-> FIN_AR
+                end
+
+                %% Key Links across departments
+                FUL -->|POD / Delivery| FIN_AR
+                INB -->|GRN Generated| FIN_AP
+                
+                %% Applying styles
+                class PROC,INB,INV,FUL,REV,CUST warehouse;
+                class SALES,FIN_AR,FIN_AP office;
+                class BANK,GL finance;
+                class MIS system;
+
+                %% Click Interactions
+                click PROC "procurement.html" "Go to Procurement Detail"
+                click INB "procurement.html" "Go to Inbound Detail"
+            </div>
+        </div>
+    </div>
+</body>
+</html>
