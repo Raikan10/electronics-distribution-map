@@ -16,66 +16,71 @@
     <div class="container">
         <a href="index.html" class="back-link">← Back to Master Map</a>
         
-        <div class="diagram-card">
-            <h2>Part 1: Accounts Receivable (Inflow)</h2>
-            <p>Collections & Credit Control. Managing money coming <b>IN</b>.</p>
-            
-            <div class="mermaid">
-            graph TD
-                %% Define Colors
-                classDef commercial fill:#fff3e0,stroke:#e65100,stroke-width:2px;
-                classDef finance fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px;
+        <h2>Level 1: Finance (AR & AP)</h2>
+        <p>Managing Cash Flow. <b>AR:</b> Collections & Credit. <b>AP:</b> 3-Way Matching & Payments.</p>
 
-                %% --- ACCOUNTS RECEIVABLE ---
-                subgraph AR_Flow ["INFLOW: Accounts Receivable"]
-                    SHIP_TRIG(("Shipment Confirmed")) --> GEN_INV["Generate Invoice"]
-                    GEN_INV --> SEND_INV["Email to Customer"]
-                    SEND_INV --> AGE_CHK{"Payment Due?"}
-                    
-                    AGE_CHK -- "No" --> WAIT["Wait Terms"]
-                    AGE_CHK -- "Yes" --> PAID_CHK{"Received?"}
-                    
-                    PAID_CHK -- "Yes" --> POST_CASH["Post Cash Receipt"]
-                    POST_CASH --> CLEAR_AR["Clear Open Item"]
-                    
-                    PAID_CHK -- "No" --> COLLECTIONS["Start Collections"]
-                    COLLECTIONS --> HOLD_TRIG[["Place Credit Hold"]]
-                end
+        <div class="grid-container">
+            <!-- LEFT COLUMN: AR -->
+            <div class="diagram-card">
+                <h3>Part 1: Accounts Receivable (Inflow)</h3>
+                
+                <div class="mermaid">
+                graph TD
+                    %% Define Colors
+                    classDef commercial fill:#fff3e0,stroke:#e65100,stroke-width:2px;
+                    classDef finance fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px;
 
-                %% CONNECTIONS
-                HOLD_TRIG -.->|Stop Sales| SALES_LINK[["Sales Module"]]
+                    %% --- ACCOUNTS RECEIVABLE ---
+                    subgraph AR_Flow ["INFLOW: Accounts Receivable"]
+                        SHIP_TRIG(("Shipment Confirmed")) --> GEN_INV["Generate Invoice"]
+                        GEN_INV --> SEND_INV["Email to Customer"]
+                        SEND_INV --> AGE_CHK{"Payment Due?"}
+                        
+                        AGE_CHK -- "No" --> WAIT["Wait Terms"]
+                        AGE_CHK -- "Yes" --> PAID_CHK{"Received?"}
+                        
+                        PAID_CHK -- "Yes" --> POST_CASH["Post Cash Receipt"]
+                        POST_CASH --> CLEAR_AR["Clear Open Item"]
+                        
+                        PAID_CHK -- "No" --> COLLECTIONS["Start Collections"]
+                        COLLECTIONS --> HOLD_TRIG[["Place Credit Hold"]]
+                    end
 
-                %% Styles
-                class SHIP_TRIG,GEN_INV,SEND_INV,AGE_CHK,WAIT,PAID_CHK,POST_CASH,CLEAR_AR,COLLECTIONS,HOLD_TRIG finance;
-                class SALES_LINK commercial;
+                    %% CONNECTIONS
+                    HOLD_TRIG -.->|Stop Sales| SALES_LINK[["Sales Module"]]
+
+                    %% Styles
+                    class SHIP_TRIG,GEN_INV,SEND_INV,AGE_CHK,WAIT,PAID_CHK,POST_CASH,CLEAR_AR,COLLECTIONS,HOLD_TRIG finance;
+                    class SALES_LINK commercial;
+                </div>
             </div>
-        </div>
 
-        <div class="diagram-card">
-            <h2>Part 2: Accounts Payable (Outflow)</h2>
-            <p>Vendor Payments & Reconciliation. Managing money going <b>OUT</b>.</p>
+            <!-- RIGHT COLUMN: AP -->
+            <div class="diagram-card">
+                <h3>Part 2: Accounts Payable (Outflow)</h3>
 
-            <div class="mermaid">
-            graph TD
-                %% Define Colors
-                classDef finance fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px;
+                <div class="mermaid">
+                graph TD
+                    %% Define Colors
+                    classDef finance fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px;
 
-                %% --- ACCOUNTS PAYABLE ---
-                subgraph AP_Flow ["OUTFLOW: Accounts Payable"]
-                    VEND_INV(("Vendor Inv Rec'd")) --> MATCH_3{"3-Way Match?"}
-                    
-                    MATCH_3 -- "Match OK" --> POST_AP["Post Liability"]
-                    POST_AP --> DUE_CHK{"Due Date?"}
-                    
-                    DUE_CHK -- "Yes" --> PAY_RUN["Exec Payment Run"]
-                    PAY_RUN --> BANK_FILE["Send Bank File"]
-                    BANK_FILE --> REMIT["Send Remittance"]
-                    
-                    MATCH_3 -- "Mismatch" --> DISPUTE["Hold & Dispute"]
-                end
+                    %% --- ACCOUNTS PAYABLE ---
+                    subgraph AP_Flow ["OUTFLOW: Accounts Payable"]
+                        VEND_INV(("Vendor Inv Rec'd")) --> MATCH_3{"3-Way Match?"}
+                        
+                        MATCH_3 -- "Match OK" --> POST_AP["Post Liability"]
+                        POST_AP --> DUE_CHK{"Due Date?"}
+                        
+                        DUE_CHK -- "Yes" --> PAY_RUN["Exec Payment Run"]
+                        PAY_RUN --> BANK_FILE["Send Bank File"]
+                        BANK_FILE --> REMIT["Send Remittance"]
+                        
+                        MATCH_3 -- "Mismatch" --> DISPUTE["Hold & Dispute"]
+                    end
 
-                %% Styles
-                class VEND_INV,MATCH_3,POST_AP,DUE_CHK,PAY_RUN,BANK_FILE,REMIT,DISPUTE finance;
+                    %% Styles
+                    class VEND_INV,MATCH_3,POST_AP,DUE_CHK,PAY_RUN,BANK_FILE,REMIT,DISPUTE finance;
+                </div>
             </div>
         </div>
     </div>

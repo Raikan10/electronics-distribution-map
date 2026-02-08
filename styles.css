@@ -43,6 +43,21 @@ nav a.active {
     margin: 0 auto;
 }
 
+/* New Grid Layout for Side-by-Side Diagrams */
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+/* Mobile responsive - stack them if screen is small */
+@media (max-width: 768px) {
+    .grid-container {
+        grid-template-columns: 1fr;
+    }
+}
+
 .diagram-card {
     background: white;
     padding: 25px;
