@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", function() {
             <a href="sales.html" id="link-sales">Sales</a>
             <a href="fulfillment.html" id="link-fulfillment">Fulfillment</a>
             <a href="finance.html" id="link-finance">Finance</a>
+            <a href="automation.html" id="link-automation">Automation</a>
         </nav>
     </header>
     `;
@@ -27,4 +28,5 @@ document.addEventListener("DOMContentLoaded", function() {
     else if (page.includes("sales")) document.getElementById("link-sales").classList.add("active");
     else if (page.includes("fulfillment")) document.getElementById("link-fulfillment").classList.add("active");
     else if (page.includes("finance")) document.getElementById("link-finance").classList.add("active");
+    else if (page.includes("automation")) document.getElementById("link-automation").classList.add("active");
 });
